@@ -13,6 +13,8 @@ html {
   --color-light: #adf;
   --color-dark: #018;
   --radius: 0.2rem;
+  --color-green: rgb(11, 122, 1);
+  --color-red: rgb(250, 0, 0);
 }
 
 body {
