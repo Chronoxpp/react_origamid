@@ -39,12 +39,15 @@ export default function App()
     0
   );
 
-  const styleSituacao = {"color": "--color-red"}
+  const styleSituacao = dados.ativa ? {color: "green"} : {color: "red"}
+
+  console.log(styleSituacao);
 
   return <div>
     <p>Nome: {dados.cliente}</p>
     <p>Idade: {dados.idade}</p>
     <p>Situação: <span style={styleSituacao}>{dados.ativa ? 'Ativa' : 'Inativa'}</span></p>
     <p>Total gasto: R$ {valorTotalCompras}</p>
+    <p>{(valorTotalCompras >= 10000) && 'Você está gastando muito!'}</p>
   </div>;
 };
