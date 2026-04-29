@@ -1,53 +1,71 @@
-// Mostre os dados da aplicação, como aprensetado no vídeo
-// Não utilize CSS externo, use o style para mudar as cores
-// Se a situação estiver ativa pinte de verde, inativa vermelho
-// Se o gasto for maior que 10000 mostre uma mensagem
-const luana = {
-  cliente: 'Luana',
-  idade: 27,
-  compras: [
-    { nome: 'Notebook', preco: 'R$ 2500' },
-    { nome: 'Geladeira', preco: 'R$ 3000' },
-    { nome: 'Smartphone', preco: 'R$ 1500' },
-  ],
-  ativa: true,
-};
-
-const mario = {
-  cliente: 'Mario',
-  idade: 31,
-  compras: [
-    { nome: 'Notebook', preco: 'R$ 2500' },
-    { nome: 'Geladeira', preco: 'R$ 3000' },
-    { nome: 'Smartphone', preco: 'R$ 1500' },
-    { nome: 'Guitarra', preco: 'R$ 3500' },
-  ],
-  ativa: false,
-};
+// Organize os produtos como mostrado no vídeo
+// Mostre apenas produtos que forem mais caros que R$ 1500
+const produtos = [
+  {
+    id: 1,
+    nome: 'Smartphone',
+    preco: 'R$ 2000',
+    cores: ['#29d8d5', '#252a34', '#fc3766'],
+  },
+  {
+    id: 2,
+    nome: 'Notebook',
+    preco: 'R$ 3000',
+    cores: ['#ffd045', '#d4394b', '#f37c59'],
+  },
+  {
+    id: 3,
+    nome: 'Tablet',
+    preco: 'R$ 1500',
+    cores: ['#365069', '#47c1c8', '#f95786'],
+  },
+];
 
 export default function App()
 {
-  const dados = luana;
-
-  const valorTotalCompras = dados.compras.reduce(
-    (total, compra) => 
+  let produtosAprovados = produtos.filter(
+    (produto) => 
     {
-      let preco = compra.preco.replace('R$', '');
-      preco = Number(preco);
-      return total + preco;
-    },
-    0
+      const preco = Number(produto.preco.replace('R$ ', ''));
+
+      return preco > 1500;
+    }
   );
 
-  const styleSituacao = dados.ativa ? {color: "green"} : {color: "red"}
+  function renderCores(cores)
+  {
+    const listaCores = cores.map(
+      (cor) => 
+      {
+        return (
+          <li style={{backgroundColor: cor, color: "white"}}>{cor}</li>
+        );
+      }
+    );
 
-  console.log(styleSituacao);
+    return (
+      <ul>
+        {listaCores}
+      </ul>
+    );
+  }
 
-  return <div>
-    <p>Nome: {dados.cliente}</p>
-    <p>Idade: {dados.idade}</p>
-    <p>Situação: <span style={styleSituacao}>{dados.ativa ? 'Ativa' : 'Inativa'}</span></p>
-    <p>Total gasto: R$ {valorTotalCompras}</p>
-    <p>{(valorTotalCompras >= 10000) && 'Você está gastando muito!'}</p>
-  </div>;
+  const pagina = produtosAprovados.map(
+    (produto) =>
+    {
+      return (
+        <div>
+          <h1>{produto.nome}</h1>
+          <p>{produto.preco}</p>
+          {renderCores(produto.cores)}
+        </div>
+      );
+    }
+  );
+
+  return (
+    <section>
+      {pagina}
+    </section>
+  );
 };
