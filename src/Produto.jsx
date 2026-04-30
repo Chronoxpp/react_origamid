@@ -1,16 +1,14 @@
-export default function({nome, dados})
+export default function Produto({produto})
 {
-    return(
-        <div style={{border: "2px solid #333", padding: "8px"}}>
-            <p>{nome}</p>
-            <ul>
-                {dados.map(
-                    (propriedade, id) =>
-                    {
-                        return <li key={id}>{propriedade}</li>
-                    }
-                )}
-            </ul>
+    return (
+        <div>
+            <h1>{produto.nome}</h1>
+            <p>R$ {produto.preco}</p>
+            <p>{produto.vendido ? 'Vendido' : 'Disponivel'}</p>
+            <div>
+                <img src={produto.fotos[0].src} alt={produto.fotos[0].alt} />
+            </div>
+            <p>{produto.descricao}</p>
         </div>
     );
 }
