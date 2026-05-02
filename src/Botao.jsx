@@ -1,22 +1,36 @@
-export default function Botao({texto, api, setProduto})
+export default function Botao({texto, api, setProduto, obterProdutoLocal})
 {
-    async function buscarProduto(api)
-    {
-        const dadosProduto = await fetch(api);
-        return await dadosProduto.json();
-    }
+    let ID_PRODUTO_LOCAL = "produto";
+    
+    return (
+        <button 
+            onClick={() => exibirProduto(texto, api)}
+        >
+            {texto}
+        </button>
+    );
 
-    async function definirProduto(api)
+    async function exibirProduto(texto, api)
     {
-        setProduto('carregando');
-
-        const produto = await buscarProduto(api);
+        const produto = await obterProduto(texto, api);
+        salvarProdutoLocalmente(ID_PRODUTO_LOCAL, produto);
         setProduto(produto);
     }
 
-    return (
-        <button onClick={
-            () => {definirProduto(api);}
-        }>{texto}</button>
-    );
+    async function obterProduto(nome, api)
+    {
+        let produto = null; 
+
+        produto = obterProdutoLocal(ID_PRODUTO_LOCAL);
+        if(produto && produto.nome === nome) return produto;
+
+        const response = await fetch(api);
+        produto = await response.json();
+        return produto;
+    }
+
+    function salvarProdutoLocalmente(id, produto)
+    {
+        window.localStorage.setItem(id, JSON.stringify(produto));
+    }
 }
