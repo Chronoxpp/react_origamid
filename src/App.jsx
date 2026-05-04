@@ -1,56 +1,84 @@
-// Otimize o código do slide anterior
-// Utilizando a array abaixo para mostrar
-// cada checkbox na tela.
-
 import React from "react";
+import Pergunta from "./Pergunta";
+
+const perguntas = [
+  {
+    pergunta: 'Qual método é utilizado para criar componentes?',
+    options: [
+      'React.makeComponent()',
+      'React.createComponent()',
+      'React.createElement()',
+    ],
+    resposta: 'React.createElement()',
+    id: 'p1',
+  },
+  {
+    pergunta: 'Como importamos um componente externo?',
+    options: [
+      'import Component from "./Component"',
+      'require("./Component")',
+      'import "./Component"',
+    ],
+    resposta: 'import Component from "./Component"',
+    id: 'p2',
+  },
+  {
+    pergunta: 'Qual hook não é nativo?',
+    options: ['useEffect()', 'useFetch()', 'useCallback()'],
+    resposta: 'useFetch()',
+    id: 'p3',
+  },
+  {
+    pergunta: 'Qual palavra deve ser utilizada para criarmos um hook?',
+    options: ['set', 'get', 'use'],
+    resposta: 'use',
+    id: 'p4',
+  },
+];
+
 
 export default function App()
 {
-  const [cores, setCores] = React.useState([]);
+  const [respostas, setRespostas] = React.useState([]);
+  const [resposta, setResposta] = React.useState(null);
 
-  const coresArray = ['azul', 'roxo', 'laranja', 'verde', 'vermelho', 'cinza'];
-
-  function handleChange({ target }) 
+  function handleSubmit(e)
   {
-    if (target.checked) {
-      setCores([...cores, target.value]);
-    } else {
-      setCores(cores.filter((cor) => cor !== target.value));
-    }
+    e.preventDefault();
+
+    if (! resposta) return;
+
+    setRespostas([...respostas, resposta]);
+
+    setResposta(null);
   }
 
-  function handleChecked(cor) 
-  {
-    console.log("checked", cor, cores, cores.includes(cor));
-    return cores.includes(cor);
-  }
+  const respostasCorretas = perguntas.filter(
+    (pergunta, index) => pergunta.resposta === respostas[index]
+  );
 
   return (
-    <form>
-      {coresArray.map(
-        (cor)=>
-        {
-          return (
-            <div key={cor}>
-              <label>
-                <input
-                  type="checkbox"
-                  value={cor}
-                  checked={handleChecked(cor)}
-                  onChange={handleChange}
-                />
-                {cor}
-              </label>
-            </div>
-          );
-        }
-      )}
+    <>
+      <h1>Quiz</h1>
+      {
+        respostas.length <= 3 
 
-      <ul>
-        {cores.map((cor) => (
-          <li key={cor}>{cor}</li>
-        ))}
-      </ul>
-    </form>
+        ? <p>Pergunta {respostas.length + 1} de {perguntas.length}</p> 
+        
+        : <p>Quiz finalizado, resultado: acertou {respostasCorretas.length} de {perguntas.length}</p>
+      }
+
+      {
+        respostas.length <= 3 &&
+
+        <Pergunta
+          pergunta={perguntas[respostas.length].pergunta}
+          respostas={perguntas[respostas.length].options} 
+          handleSubmit={handleSubmit}
+          resposta={resposta}
+          setResposta={setResposta}
+        />
+      }
+    </>
   );
 }
