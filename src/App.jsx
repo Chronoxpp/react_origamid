@@ -5,6 +5,7 @@ import Produtos from "./Components/Produtos";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Contato from "./Components/Contato";
+import Produto from "./Components/Produto";
 
 export default function App()
 {
@@ -16,6 +17,7 @@ export default function App()
         <main className="Content">
           <Routes>
             <Route path="/" element={<Produtos />} />
+            <Route path="produto/:id" element={<Produto />} />
             <Route path="contato" element={<Contato />} />
           </Routes>
         </main>
